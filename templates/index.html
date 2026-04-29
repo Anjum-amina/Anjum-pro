@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anjum | Portfolio with AI Chatbot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Header / Navigation */
+        header {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ffd89b, #c7e9fb);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #ffd89b;
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 2rem 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero .tagline {
+            font-size: 1.2rem;
+            color: #ddd;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ff7e5e;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 40px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #ff6b4a;
+            transform: translateY(-3px);
+        }
+
+        /* Cards & Grids */
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 70px;
+            height: 4px;
+            background: #ff7e5e;
+            display: block;
+            margin: 0.5rem auto;
+            border-radius: 2px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.15);
+        }
+
+        .skill-tag {
+            display: inline-block;
+            background: #ff7e5e;
+            padding: 0.4rem 1rem;
+            border-radius: 30px;
+            margin: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        .soft-skill {
+            background: #4a90e2;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #ffd89b;
+        }
+
+        /* Chatbot Widget */
+        .chatbot-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff7e5e, #ff6b4a);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 90px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background: rgba(30, 30, 40, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .chat-container.active {
+            display: flex;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #ff7e5e, #ff6b4a);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 10px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-message {
+            background: #ff7e5e;
+            align-self: flex-end;
+        }
+
+        .bot-message {
+            background: rgba(255,255,255,0.2);
+            align-self: flex-start;
+        }
+
+        .chat-input-container {
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .chat-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .send-btn {
+            background: #ff7e5e;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 10px;
+            align-self: flex-start;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: white;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-10px); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1rem;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            section {
+                padding: 80px 1rem 60px;
+            }
+            .chat-container {
+                width: 300px;
+                height: 450px;
+                bottom: 80px;
+            }
+        }
+
+        .loader {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid #ff7e5e;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(0,0,0,0.5);
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">Anjum Port</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#education">Education</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h1 id="profileName">B. Anjum</h1>
+        <div class="tagline">Self-confident | Positive mindset | Lifelong Learner</div>
+        <a href="#contact" class="btn">Get In Touch</a>
+    </section>
+
+    <!-- Education -->
+    <section id="education">
+        <h2 class="section-title">Education</h2>
+        <div id="educationContainer" class="grid-2">
+            <div class="loader"><div class="spinner"></div></div>
+        </div>
+    </section>
+
+    <!-- Skills & Soft Skills -->
+    <section id="skills">
+        <h2 class="section-title">Technical & Soft Skills</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>💻 Technical Skills</h3>
+                <div id="techSkills" style="margin-top: 1rem;">Loading...</div>
+            </div>
+            <div class="card">
+                <h3>🤝 Soft Skills</h3>
+                <div id="softSkills" style="margin-top: 1rem;">Loading...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects & Certifications -->
+    <section id="projects">
+        <h2 class="section-title">Projects & Achievements</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📁 Featured Projects</h3>
+                <div id="projectsList" style="margin-top: 1rem;">Loading...</div>
+            </div>
+            <div class="card">
+                <h3>📜 Certifications</h3>
+                <div id="certificationsList" style="margin-top: 1rem;">Loading...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact / Hobbies -->
+    <section id="contact">
+        <h2 class="section-title">Contact & More</h2>
+        <div class="grid-2">
+            <div class="card">
+                <h3>📞 Contact Info</h3>
+                <p><strong>Email:</strong> <span id="contactEmail">beldaranjum623@gmail.com</span></p>
+                <p><strong>Phone:</strong> <span id="contactPhone">+91-9705347623</span></p>
+                <p><strong>GitHub:</strong> <a href="#" id="githubLink" target="_blank" style="color:#ffd89b;">github.com/anjum</a></p>
+                <p><strong>LinkedIn:</strong> <a href="#" id="linkedinLink" target="_blank" style="color:#ffd89b;">linkedin.com/in/anjum</a></p>
+            </div>
+            <div class="card">
+                <h3>🎯 Hobbies & Interests</h3>
+                <div id="hobbiesList">Loading...</div>
+                <br>
+                <h3>📝 Profile Summary</h3>
+                <p id="profileSummary">Self-confident individual with a positive mindset. Eager to learn new skills and technologies.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Chatbot Widget -->
+<div class="chatbot-widget">
+    <button class="chat-toggle" id="chatToggle">💬</button>
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3>🤖 Ask me about Anjum</h3>
+            <button class="close-chat" id="closeChat">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages">
+            <div class="message bot-message">
+                👋 Hi! I'm Anjum's AI assistant. Ask me anything about skills, education, projects, or contact info!
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Ask me something...">
+            <button class="send-btn" id="sendBtn">Send</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>© 2025 B. Anjum | Built with Flask, MongoDB & AI Chatbot | Deployed with Gunicorn</p>
+</footer>
+
+<script>
+    // Fetch data from Flask API
+    async function loadProfileData() {
+        try {
+            const response = await fetch('/api/profile');
+            const data = await response.json();
+
+            // Update hero name
+            document.getElementById('profileName').innerText = data.name || "B. Anjum";
+
+            // Education
+            const eduContainer = document.getElementById('educationContainer');
+            if(data.education && data.education.length) {
+                eduContainer.innerHTML = '';
+                data.education.forEach(edu => {
+                    const eduCard = document.createElement('div');
+                    eduCard.className = 'card';
+                    eduCard.innerHTML = `
+                        <h3>${edu.degree}</h3>
+                        <p><strong>${edu.institution}</strong></p>
+                        ${edu.score ? `<p>Score: ${edu.score}</p>` : '<p>Currently Pursuing</p>'}
+                        ${edu.year ? `<p>📅 ${edu.year}</p>` : ''}
+                    `;
+                    eduContainer.appendChild(eduCard);
+                });
+            } else {
+                eduContainer.innerHTML = '<div class="card">No education data</div>';
+            }
+
+            // Technical Skills
+            const techDiv = document.getElementById('techSkills');
+            if(data.skills && data.skills.length) {
+                techDiv.innerHTML = '';
+                data.skills.forEach(skill => {
+                    const span = document.createElement('span');
+                    span.className = 'skill-tag';
+                    span.innerText = skill;
+                    techDiv.appendChild(span);
+                });
+            } else {
+                techDiv.innerHTML = '<p>No skills listed</p>';
+            }
+
+            // Soft Skills
+            const softDiv = document.getElementById('softSkills');
+            if(data.soft_skills && data.soft_skills.length) {
+                softDiv.innerHTML = '';
+                data.soft_skills.forEach(skill => {
+                    const span = document.createElement('span');
+                    span.className = 'skill-tag soft-skill';
+                    span.innerText = skill;
+                    softDiv.appendChild(span);
+                });
+            } else {
+                softDiv.innerHTML = '<p>No soft skills listed</p>';
+            }
+
+            // Projects List
+            const projectsDiv = document.getElementById('projectsList');
+            if(data.projects && data.projects.length) {
+                projectsDiv.innerHTML = '';
+                data.projects.forEach(proj => {
+                    const projBlock = document.createElement('div');
+                    projBlock.style.marginBottom = '1rem';
+                    projBlock.innerHTML = `
+                        <div class="project-title">📌 ${proj.name}</div>
+                        <p>${proj.description || 'No description provided.'}</p>
+                        ${proj.technologies ? `<div style="margin-top: 8px;">${proj.technologies.map(t => `<span class="skill-tag" style="font-size:0.8rem;">${t}</span>`).join('')}</div>` : ''}
+                    `;
+                    projectsDiv.appendChild(projBlock);
+                });
+            } else {
+                projectsDiv.innerHTML = '<p>No projects yet. Coming soon!</p>';
+            }
+
+            // Certifications
+            const certDiv = document.getElementById('certificationsList');
+            if(data.certifications && data.certifications.length) {
+                certDiv.innerHTML = '';
+                data.certifications.forEach(cert => {
+                    const certItem = document.createElement('p');
+                    certItem.innerHTML = `✅ ${cert.name || cert} ${cert.year ? `(${cert.year})` : ''}<br><small>${cert.description || ''}</small>`;
+                    certDiv.appendChild(certItem);
+                });
+            } else {
+                certDiv.innerHTML = '<p>No certifications listed</p>';
+            }
+
+            // Hobbies
+            const hobbiesDiv = document.getElementById('hobbiesList');
+            if(data.hobbies && data.hobbies.length) {
+                hobbiesDiv.innerHTML = '';
+                data.hobbies.forEach(hobby => {
+                    const hobbyTag = document.createElement('span');
+                    hobbyTag.className = 'skill-tag';
+                    hobbyTag.style.background = '#2c7a4d';
+                    hobbyTag.innerText = hobby;
+                    hobbiesDiv.appendChild(hobbyTag);
+                });
+            } else {
+                hobbiesDiv.innerHTML = '<p>No hobbies listed</p>';
+            }
+
+            // Contact Details
+            document.getElementById('contactEmail').innerText = data.email;
+            document.getElementById('contactPhone').innerText = data.phone;
+            document.getElementById('githubLink').href = data.github || '#';
+            document.getElementById('githubLink').innerText = data.github ? data.github.replace('https://', '') : 'github/anjum';
+            document.getElementById('linkedinLink').href = data.linkedin || '#';
+            document.getElementById('linkedinLink').innerText = data.linkedin ? data.linkedin.replace('https://', '') : 'linkedin/in/anjum';
+            document.getElementById('profileSummary').innerText = data.summary || "Self-confident individual...";
+
+        } catch (error) {
+            console.error("Error loading profile:", error);
+            const containers = ['educationContainer', 'techSkills', 'softSkills', 'projectsList', 'certificationsList', 'hobbiesList'];
+            containers.forEach(id => {
+                const el = document.getElementById(id);
+                if(el && el.innerHTML.includes('loader')) el.innerHTML = '<p>Failed to load data. Please refresh.</p>';
+            });
+        }
+    }
+
+    // Chatbot functionality
+    let isTyping = false;
+
+    async function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        if (!message || isTyping) return;
+
+        // Add user message to chat
+        addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        isTyping = true;
+
+        try {
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            
+            // Remove typing indicator and add bot response
+            removeTypingIndicator();
+            addMessage(data.response, 'bot');
+        } catch (error) {
+            console.error('Chat error:', error);
+            removeTypingIndicator();
+            addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+        }
+        isTyping = false;
+    }
+
+    function addMessage(text, sender) {
+        const messagesDiv = document.getElementById('chatMessages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        messageDiv.textContent = text;
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function showTypingIndicator() {
+        const messagesDiv = document.getElementById('chatMessages');
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'typing-indicator';
+        typingDiv.id = 'typingIndicator';
+        typingDiv.innerHTML = '<span></span><span></span><span></span>';
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    function removeTypingIndicator() {
+        const indicator = document.getElementById('typingIndicator');
+        if (indicator) indicator.remove();
+    }
+
+    // Chat UI controls
+    document.getElementById('chatToggle').addEventListener('click', () => {
+        document.getElementById('chatContainer').classList.toggle('active');
+    });
+
+    document.getElementById('closeChat').addEventListener('click', () => {
+        document.getElementById('chatContainer').classList.remove('active');
+    });
+
+    document.getElementById('sendBtn').addEventListener('click', sendMessage);
+    document.getElementById('chatInput').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    // Smooth scrolling for nav links
+    document.querySelectorAll('.nav-links a').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            const targetSection = document.getElementById(targetId);
+            if(targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Initial load
+    loadProfileData();
+</script>
+</body>
+</html>
